@@ -60,7 +60,7 @@
 						</SwipeView.RightItems>
 
 						<Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" Padding="4" HeightRequest="64">
-							<CheckBox IsChecked="{Binding IsPurchased}" VerticalOptions="Center"
+							<CheckBox IsChecked="{Binding IsPurchased, Mode=TwoWay}" VerticalOptions="Center"
                         CheckedChanged="CheckBox_CheckedChanged"/>
 
 							<VerticalStackLayout Grid.Column="1" Spacing="2">

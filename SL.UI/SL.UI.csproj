@@ -24,7 +24,7 @@
 		<ApplicationTitle>SL.UI</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.sl.ui</ApplicationId>
+		<ApplicationId>Eden.Pandora.ShoppingList.UI</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

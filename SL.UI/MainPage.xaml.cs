@@ -66,24 +66,59 @@ namespace SL.UI
 				ShoppingList.UpdateItem(it.product.name, it.Quantity, it.IsPurchased);
 				RefreshItems();
 			}
-			if (((Button)sender).BindingContext is ShoppingListItem _it && _it.Quantity == 1)
+			else if (((Button)sender).BindingContext is ShoppingListItem _it && _it.Quantity == 1)
 			{
 				ShoppingList.RemoveItem(_it.product.name);
 				RefreshItems();
 			}
 		}
 		bool _Checkboxevent = true;
+		void RepositionAfterToggle(ShoppingListItem it, bool isChecked)
+		{
+			// 1) vedd ki
+			var old = Items.IndexOf(it);
+			if (old >= 0) Items.RemoveAt(old);
+			it.IsPurchased = isChecked;
+			if (it.IsPurchased)
+			{
+				// 2/a) megvettek a lista VÉGÉN – egyszerűen add hozzá
+				Items.Add(it);
+			}
+			else
+			{
+				// 2/b) nem-vett (false) elemek az ELEJÉN
+				//     ha nem kell ABC-sorrend, elég az első megvett elem indexe
+				int firstPurchased = Items.TakeWhile(x => !x.IsPurchased).Count();
+				Items.Insert(firstPurchased, it);
+			}
+		}
 		private async void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
 		{
+			if (!((CheckBox)sender).IsLoaded) return;
 			//if (!_Checkboxevent) return;
 			if (((CheckBox)sender).BindingContext is ShoppingListItem it && _Checkboxevent)
 			{
 				it.IsPurchased = e.Value;
+				//RepositionAfterToggle(it,e.Value);
+
+				if (e.Value)
+				{
+					Items.Remove(it);
+					Items.Add(it);
+				}
+				else
+				{
+					Items.Remove(it);
+					Items.Insert(0, it);
+					//Items.Insert(Items.Count(i => i.IsPurchased), it);
+					await Dispatcher.DispatchAsync(() =>
+					{
+						itemList.ItemsSource = null;
+						itemList.ItemsSource = Items;
+					});
+				}
+
 				ShoppingList.UpdateItem(it.product.name, it.Quantity, it.IsPurchased);
-
-				//itemList.ItemsSource = Items.OrderBy(i => i.IsPurchased).ThenBy(i => i.product.name);
-
-				RefreshItems();
 
 				sum.Text = $"Összesen:\n{Items.Where(item_ => !item_.IsPurchased).Sum(_item => _item.TotalPrice).ToString()} Ft";
 			}
