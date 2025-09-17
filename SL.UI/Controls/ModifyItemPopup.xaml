@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SL.UI.Controls.ModifyItemPopup"
+			 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+		     CanBeDismissedByTappingOutsideOfPopup="True">
+	<Border StrokeShape="RoundRectangle 16" Padding="16" BackgroundColor="Transparent" >
+		<!--BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"-->
+		<VerticalStackLayout Spacing="12" >
+			<Label Text="Add meg az értéket:" FontAttributes="Bold" />
+			<Entry x:Name="Input" Placeholder="Ide írj…" />
+			<HorizontalStackLayout HorizontalOptions="End" Spacing="12">
+				<Button Text="Mégse" Clicked="OnCancel"/>
+				<Button Text="OK" Clicked="OnOk"/>
+			</HorizontalStackLayout>
+		</VerticalStackLayout>
+	</Border>
+</toolkit:Popup>

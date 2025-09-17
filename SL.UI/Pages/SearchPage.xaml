@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SL.UI.Pages.SearchPage"
+			 xmlns:local="clr-namespace:SL.Core;assembly=SL.Core"
+			 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+			 >
+	<Shell.TitleView>
+		<Grid ColumnDefinitions="*,Auto,Auto">
+			<Label Text="Mentett termékek" FontSize="22" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0"/>
+			<Button x:Name="CreateNewItemBtn" Text="+" FontSize="18" Margin="5" FontAttributes="Bold" Clicked="CreateNewItemBtn_Clicked"  Grid.Column="1"/>
+		</Grid>
+	</Shell.TitleView>
+	
+	<Grid RowDefinitions="Auto,*" Padding="0">
+		<SearchBar x:Name="ItemSearchBar"
+             Grid.Row="0"
+             TextChanged="ItemSearchBar_TextChanged"
+             VerticalOptions="Center"/>
+
+		<CollectionView x:Name="itemSearchResults" Grid.Row="1" SelectionMode="None" ItemSizingStrategy="MeasureFirstItem" ItemsUpdatingScrollMode="KeepScrollOffset">
+			<CollectionView.ItemTemplate>
+				<DataTemplate x:DataType="local:Product">
+					<SwipeView>
+						<SwipeView.RightItems>
+							<SwipeItems Mode="Reveal">
+								<SwipeItem Text="Módosítás" Invoked="modify_item_Clicked" />
+								<SwipeItem Text="Ár megadása" Invoked="modify_item_price_Clicked" />
+								<SwipeItem Text="Törlés" Invoked="delete_item_Clicked" />
+							</SwipeItems>
+						</SwipeView.RightItems>
+
+						<Grid ColumnDefinitions="*,Auto" Padding="10" HeightRequest="56">
+							<Grid.GestureRecognizers>
+								<TapGestureRecognizer Tapped="OnItemTapped" />
+							</Grid.GestureRecognizers>
+							<Label Grid.Column="0" Text="{Binding name}" FontSize="18" VerticalTextAlignment="Center" LineBreakMode="TailTruncation"/>
+							<VerticalStackLayout Grid.Column="1" Spacing="0" HorizontalOptions="End">
+								<Label FontSize="14" Text="{Binding last_price, StringFormat='{}{0} Ft'}" HorizontalTextAlignment="End"/>
+								<Label FontSize="12" Text="{Binding AveragePrice, StringFormat='Átlag: {0:0} Ft'}" Opacity="0.8" HorizontalTextAlignment="End"/>
+							</VerticalStackLayout>
+						</Grid>
+					</SwipeView>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+	</Grid>
+</ContentPage>

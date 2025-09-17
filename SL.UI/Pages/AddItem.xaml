@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SL.UI.Pages.AddItem"
+             Title="Új termék">
+	<Grid>
+		<VerticalStackLayout Padding="30,10" Spacing="10">
+			<Label Text="Termék neve" FontSize="18" Margin="10,100,10,0" HorizontalTextAlignment="Center"/>
+			<Entry Placeholder="Nagyon menő fűnyíró" x:Name="item_name" FontSize="24" HorizontalTextAlignment="Center" Keyboard="Default"/>
+			<Label Text="Termék értéke (Forint/ db-kg)" Margin="10,100,10,0" FontSize="18" HorizontalTextAlignment="Center"/>
+			<Entry Placeholder="10000... Túl sok..." x:Name="item_price" FontSize="24" HorizontalTextAlignment="Center" Keyboard="Numeric"/>
+
+		</VerticalStackLayout>
+		<Button VerticalOptions="End" Margin="10,10,10,20" Text="Mentés" FontSize="25" FontAttributes="Bold" x:Name="save_item" Clicked="save_item_Clicked"/>
+	</Grid>
+</ContentPage>

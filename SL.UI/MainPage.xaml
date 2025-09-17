@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SL.UI.MainPage" xmlns:local="clr-namespace:SL.Core;assembly=SL.Core"
+			 >
+	<Shell.TitleView>
+		<Grid ColumnDefinitions="*,100,Auto">
+			<Label Text="Bevásárló lista" FontSize="22"  MaxLines="1" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0"/>
+			<Label x:Name="sum" Text="Összesen:&#10; 0 Ft" FontSize="16" Margin="-10,7,0,0" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalOptions="Start" Grid.Column="1"/>
+			<Button x:Name="AddItemBtn" Text="Termékeim" FontSize="18" Margin="5" FontAttributes="Bold" Clicked="AddItemBtn_Clicked" Grid.Column="2"/>
+		</Grid>
+	</Shell.TitleView>
+	<!--<VerticalStackLayout Padding="15,10">
+
+		<ListView x:Name="itemList"
+          SelectionMode="None">
+			--><!-- nincs kijelölés --><!--
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="local:ShoppingListItem">
+					<ViewCell >
+						<ViewCell.ContextActions>
+							<MenuItem x:Name="delete_item" Text="Törlés" Clicked="delete_item_Clicked"/>
+						</ViewCell.ContextActions>
+						<Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+							<CheckBox IsChecked="{Binding IsPurchased, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="Start" Margin="-12,0,0,0" CheckedChanged="CheckBox_CheckedChanged"/>
+							--><!-- Bal oldal: Product + árak --><!--
+							<VerticalStackLayout Grid.Column="1" Spacing="2">
+								<Label FontSize="18" Text="{Binding product.name}" />
+								<Label FontSize="12" Text="{Binding product.last_price, StringFormat='Utolsó ár: {0} Ft'}"/>
+							</VerticalStackLayout>
+							<Label VerticalOptions="End" Grid.Column="1" HorizontalOptions="End" FontSize="12"  Text="{Binding TotalPrice, StringFormat='Összesen: {0} Ft'}"/>
+
+							--><!-- Jobb oldal: - [qty] + --><!--
+							<Button Grid.Column="2" Text="−" Clicked="OnMinusClicked" Padding="0" Margin="7"/>
+							<Label  Grid.Column="3" Text="{Binding Quantity}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Margin="8,0"/>
+							<Button Grid.Column="4" Text="+" Clicked="OnPlusClicked" Padding="0" Margin="7"/>
+						</Grid>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</VerticalStackLayout>-->
+	<Grid RowDefinitions="Auto,*" Padding="15,10">
+		<!-- Fejléc sávod maradhat TitleView-ben; itt csak a lista. -->
+
+		<CollectionView x:Name="itemList"
+                    Grid.Row="1"
+                    ItemsSource="{Binding Items}"
+                    SelectionMode="None"
+                    ItemSizingStrategy="MeasureFirstItem">
+			<CollectionView.ItemTemplate>
+				<DataTemplate x:DataType="local:ShoppingListItem">
+					<!-- Tipp: SwipeView a törléshez ContextActions helyett -->
+					<SwipeView>
+						<SwipeView.RightItems>
+							<SwipeItems Mode="Reveal">
+								<SwipeItem Text="Törlés" Invoked="delete_item_Clicked" />
+							</SwipeItems>
+						</SwipeView.RightItems>
+
+						<Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" Padding="4" HeightRequest="64">
+							<CheckBox IsChecked="{Binding IsPurchased}" VerticalOptions="Center"
+                        CheckedChanged="CheckBox_CheckedChanged"/>
+
+							<VerticalStackLayout Grid.Column="1" Spacing="2">
+								<Label FontSize="18" Text="{Binding product.name}" LineBreakMode="TailTruncation"/>
+								<Label FontSize="12" Text="{Binding product.last_price, StringFormat='Utolsó ár: {0} Ft'}" Opacity="0.8"/>
+							</VerticalStackLayout>
+
+							<Label Grid.Column="1" HorizontalOptions="End" VerticalOptions="End" FontSize="12"
+                     Text="{Binding TotalPrice, StringFormat='Összesen: {0} Ft'}"/>
+
+							<Button Grid.Column="2" Text="−" Clicked="OnMinusClicked" Padding="0" />
+							<Label  Grid.Column="3" Text="{Binding Quantity}" VerticalOptions="Center" HorizontalOptions="Center" />
+							<Button Grid.Column="4" Text="+" Clicked="OnPlusClicked" Padding="0" />
+						</Grid>
+					</SwipeView>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+	</Grid>
+</ContentPage>
