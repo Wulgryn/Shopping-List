@@ -138,6 +138,21 @@ namespace SL.Core
 
 				await Task.Yield();
 			}
+
+			string[] parts = needle.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length > 0)
+			{
+				foreach (var s in list)
+				{
+					cancellationToken.ThrowIfCancellationRequested();
+
+					string lower = (s ?? string.Empty).ToLowerInvariant();
+					if (parts.Any(p => lower.Contains(p)))
+						yield return lower;
+
+					await Task.Yield();
+				}
+			}
 		}
 
 		static async IAsyncEnumerable<string> SearchAsync(string szoveg, IAsyncEnumerable<string> list, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default)
